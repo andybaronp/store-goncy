@@ -1,7 +1,7 @@
 import React, { FC, useMemo, useState } from 'react'
 import { GetStaticProps } from 'next'
 import { Product } from '../product/types'
-import { Button, Grid, Link, Stack, Text } from '@chakra-ui/react'
+import { Button, Grid, Link, Stack, Text, Box, Flex } from '@chakra-ui/react'
 import api from '../product/api'
 
 interface Props {
@@ -36,15 +36,26 @@ const IndexRoute: FC<Props> = ({ productos }) => {
   )
 
   return (
-    <Stack>
+    <Stack spacing={6}>
       <Grid templateColumns='repeat(auto-fill, minmax(250px,1fr))' gridGap={6}>
         {productos.map((product) => (
-          <Stack key={product.id} backgroundColor='gray.100'>
-            <Text>{product.title}</Text>
-            <Text>{parseCurrency(product.price)}</Text>
+          <Stack
+            spacing={3}
+            key={product.id}
+            backgroundColor='gray.100'
+            padding={4}
+            borderRadius='sm'
+          >
+            <Stack spacing={1}>
+              <Text>{product.title}</Text>
+              <Text fontSize='medium' fontWeight='500' color='gray.500'>
+                {parseCurrency(product.price)}
+              </Text>
+            </Stack>
             <Button
+              size='sm'
               onClick={() => setCart((cart) => cart.concat(product))}
-              colorScheme='blue'
+              colorScheme='primary'
             >
               Agregar
             </Button>
@@ -52,14 +63,23 @@ const IndexRoute: FC<Props> = ({ productos }) => {
         ))}
       </Grid>
       {Boolean(cart.length) && (
-        <Button
-          href={`https://wa.me/573152704286?text=${encodeURIComponent(text)}`}
-          isExternal
-          as={Link}
-          colorScheme={'whatsapp'}
+        <Flex
+          alignItems='center'
+          justifyContent='center'
+          position='sticky'
+          bottom='0'
+          padding={4}
         >
-          Completar pedido {cart.length} productos
-        </Button>
+          <Button
+            width='fit-content'
+            href={`https://wa.me/573152704286?text=${encodeURIComponent(text)}`}
+            isExternal
+            as={Link}
+            colorScheme={'whatsapp'}
+          >
+            Completar pedido {cart.length} productos
+          </Button>
+        </Flex>
       )}
     </Stack>
   )
