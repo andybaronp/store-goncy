@@ -1,13 +1,12 @@
 import React, { FC, useMemo, useState } from 'react'
 import { GetStaticProps } from 'next'
 import { Product } from '../product/types'
-import { Button, Grid, Link, Stack, Text, Box, Flex } from '@chakra-ui/react'
+import { Button, Grid, Link, Stack, Text, Flex } from '@chakra-ui/react'
 import api from '../product/api'
 
 interface Props {
   productos: Product[]
 }
-
 const IndexRoute: FC<Props> = ({ productos }) => {
   const [cart, setCart] = useState<Product[]>([])
   function parseCurrency(value: number): string {
@@ -72,7 +71,9 @@ const IndexRoute: FC<Props> = ({ productos }) => {
         >
           <Button
             width='fit-content'
-            href={`https://wa.me/573152704286?text=${encodeURIComponent(text)}`}
+            href={`https://wa.me/${
+              process.env.customNumber
+            }?text=${encodeURIComponent(text)}`}
             isExternal
             as={Link}
             colorScheme={'whatsapp'}
