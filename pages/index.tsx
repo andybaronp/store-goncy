@@ -1,14 +1,16 @@
 import React, { FC, useMemo, useState } from 'react'
 import { GetStaticProps } from 'next'
 import { Product } from '../product/types'
-import { Button, Grid, Link, Stack, Text, Flex } from '@chakra-ui/react'
+import { Button, Grid, Link, Stack, Text, Flex, Image } from '@chakra-ui/react'
 import api from '../product/api'
-const numero = process.env.CUSTOMNUMBER
+import { motion, AnimateSharedLayout, AnimatePresence } from 'framer-motion'
 interface Props {
   productos: Product[]
 }
 const IndexRoute: FC<Props> = ({ productos }) => {
   const [cart, setCart] = useState<Product[]>([])
+  const [selectedImage, setSelectedImage] = useState<string>(null)
+
   function parseCurrency(value: number): string {
     return value.toLocaleString('es-CO', {
       style: 'currency',
@@ -35,56 +37,96 @@ const IndexRoute: FC<Props> = ({ productos }) => {
   )
 
   return (
-    <Stack spacing={6}>
-      <Grid templateColumns='repeat(auto-fill, minmax(250px,1fr))' gridGap={6}>
-        {productos.map((product) => (
-          <Stack
-            spacing={3}
-            key={product.id}
-            backgroundColor='gray.100'
-            padding={4}
-            borderRadius='sm'
-          >
-            <Stack spacing={1}>
-              <Text>{product.title}</Text>
-              <Text fontSize='medium' fontWeight='500' color='gray.500'>
-                {parseCurrency(product.price)}
-              </Text>
-            </Stack>
-            <Button
-              size='sm'
-              onClick={() => setCart((cart) => cart.concat(product))}
-              colorScheme='primary'
-            >
-              Agregar
-            </Button>
-          </Stack>
-        ))}
-      </Grid>
-      {Boolean(cart.length) && (
-        <Flex
-          alignItems='center'
-          justifyContent='center'
-          position='sticky'
-          bottom='0'
-          padding={4}
+    <AnimateSharedLayout type='crossfade'>
+      <Stack spacing={6}>
+        <Grid
+          templateColumns='repeat(auto-fill, minmax(250px,1fr))'
+          gridGap={6}
         >
-          <Button
-            width='fit-content'
-<<<<<<< HEAD
-            href={`https://wa.me/573152204136?text=${encodeURIComponent(text)}`}
-=======
-            href={`https://wa.me/573152704286?text=${encodeURIComponent(text)}`}
->>>>>>> e32af13ff1675aace7ce7d0d797ac7bc19228a81
-            isExternal
-            as={Link}
-            colorScheme={'whatsapp'}
+          {productos.map((product) => (
+            <Stack
+              spacing={3}
+              key={product.id}
+              backgroundColor='gray.100'
+              padding={4}
+              borderRadius='sm'
+            >
+              <Image
+                as={motion.img}
+                cursor='pointer'
+                layoutId={product.image}
+                src={product.image}
+                alt='img'
+                objectFit='cover'
+                //maxHeight={128}
+                borderTopRadius={6}
+                onClick={() => setSelectedImage(product.image)}
+              />
+              <Stack spacing={1}>
+                <Text>{product.title}</Text>
+                <Text fontSize='medium' fontWeight='500' color='gray.500'>
+                  {parseCurrency(product.price)}
+                </Text>
+              </Stack>
+              <Button
+                size='sm'
+                onClick={() => setCart((cart) => cart.concat(product))}
+                colorScheme='primary'
+              >
+                Agregar
+              </Button>
+            </Stack>
+          ))}
+        </Grid>
+        <AnimatePresence>
+          {Boolean(cart.length) && (
+            <Flex
+              alignItems='center'
+              justifyContent='center'
+              position='sticky'
+              bottom='0'
+              as={motion.div}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              padding={4}
+            >
+              <Button
+                width='fit-content'
+                href={`https://wa.me/573152204136?text=${encodeURIComponent(
+                  text
+                )}`}
+                isExternal
+                as={Link}
+                colorScheme={'whatsapp'}
+              >
+                Completar pedido {cart.length} productos
+              </Button>
+            </Flex>
+          )}
+        </AnimatePresence>
+      </Stack>
+      <AnimatePresence>
+        {selectedImage && (
+          <Flex
+            key='backdrop'
+            alignItems='center'
+            as={motion.div}
+            backgroundColor='rgba(0,0,0,0.5)'
+            justifyContent='center'
+            layoutId={selectedImage}
+            position='fixed'
+            top='0'
+            left='0'
+            width='100%'
+            height='100%'
+            onClick={() => setSelectedImage(null)}
           >
-            Completar pedido {cart.length} productos
-          </Button>
-        </Flex>
-      )}
-    </Stack>
+            <Image key='image' src={selectedImage} alt='imgAnimation' />
+          </Flex>
+        )}
+      </AnimatePresence>
+    </AnimateSharedLayout>
   )
 }
 
