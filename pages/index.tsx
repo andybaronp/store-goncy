@@ -2,11 +2,13 @@ import React, { FC, useMemo, useState } from 'react'
 import { GetStaticProps } from 'next'
 import { Product } from '../product/types'
 import { Button, Grid, Link, Stack, Text, Flex, Image } from '@chakra-ui/react'
+import { motion, AnimatePresence } from 'framer-motion'
 import api from '../product/api'
-import { motion, AnimateSharedLayout, AnimatePresence } from 'framer-motion'
+
 interface Props {
   productos: Product[]
 }
+
 const IndexRoute: FC<Props> = ({ productos }) => {
   const [cart, setCart] = useState<Product[]>([])
   const [selectedImage, setSelectedImage] = useState<string>(null)
@@ -37,7 +39,7 @@ const IndexRoute: FC<Props> = ({ productos }) => {
   )
 
   return (
-    <AnimateSharedLayout type='crossfade'>
+    <Stack>
       <Stack spacing={6}>
         <Grid
           templateColumns='repeat(auto-fill, minmax(250px,1fr))'
@@ -126,7 +128,7 @@ const IndexRoute: FC<Props> = ({ productos }) => {
           </Flex>
         )}
       </AnimatePresence>
-    </AnimateSharedLayout>
+    </Stack>
   )
 }
 
