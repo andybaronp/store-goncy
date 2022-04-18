@@ -101,6 +101,12 @@ const IndexRoute: FC<Props> = ({ productos }) => {
                 isExternal
                 as={Link}
                 colorScheme={'whatsapp'}
+                leftIcon={
+                  <Image
+                    src='https://icongr.am/fontawesome/whatsapp.svg?size=32&color=ffffff'
+                    alt='icon'
+                  />
+                }
               >
                 Completar pedido {cart.length} productos
               </Button>
