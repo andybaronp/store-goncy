@@ -3,7 +3,7 @@ import { GetStaticProps } from 'next'
 import { Product } from '../product/types'
 import { Button, Grid, Link, Stack, Text, Flex } from '@chakra-ui/react'
 import api from '../product/api'
-
+const numero = process.env.CUSTOMNUMBER
 interface Props {
   productos: Product[]
 }
@@ -71,9 +71,7 @@ const IndexRoute: FC<Props> = ({ productos }) => {
         >
           <Button
             width='fit-content'
-            href={`https://wa.me/${
-              process.env.customNumber
-            }?text=${encodeURIComponent(text)}`}
+            href={`https://wa.me/573152204136?text=${encodeURIComponent(text)}`}
             isExternal
             as={Link}
             colorScheme={'whatsapp'}
