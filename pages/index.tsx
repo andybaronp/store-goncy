@@ -71,7 +71,11 @@ const IndexRoute: FC<Props> = ({ productos }) => {
         >
           <Button
             width='fit-content'
+<<<<<<< HEAD
             href={`https://wa.me/573152204136?text=${encodeURIComponent(text)}`}
+=======
+            href={`https://wa.me/573152704286?text=${encodeURIComponent(text)}`}
+>>>>>>> e32af13ff1675aace7ce7d0d797ac7bc19228a81
             isExternal
             as={Link}
             colorScheme={'whatsapp'}
