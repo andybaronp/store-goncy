@@ -6,8 +6,6 @@ export default async function handler(
 ) {
   console.log(req.headers['x-secret'])
   if (req.headers['x-secret'] === process.env.REVALIDATE) {
-    console.log('req -----headers')
-
     await response.unstable_revalidate('/')
     return response.json({ revalidate: true })
   }
